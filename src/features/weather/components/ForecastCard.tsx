@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { useWeatherStore } from "../store/weatherStore";
 import type { ForecastItem } from "../types/weather.types";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -122,35 +121,6 @@ function DayCard({
 
 export default function ForecastCard() {
   const { forecast, isLoading } = useWeatherStore();
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-
-  function onMouseDown(e: React.MouseEvent) {
-    isDragging.current = true;
-    startX.current = e.pageX - scrollRef.current!.offsetLeft;
-    scrollLeft.current = scrollRef.current!.scrollLeft;
-    scrollRef.current!.style.cursor = "grabbing";
-  }
-  function onMouseMove(e: React.MouseEvent) {
-    if (!isDragging.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current!.offsetLeft;
-    scrollRef.current!.scrollLeft =
-      scrollLeft.current - (x - startX.current) * 1.5;
-  }
-  function onMouseUp() {
-    isDragging.current = false;
-    if (scrollRef.current) scrollRef.current.style.cursor = "grab";
-  }
-
-  function scrollBy(direction: "left" | "right") {
-    scrollRef.current?.scrollBy({
-      left: direction === "right" ? 110 : -110,
-      behavior: "smooth",
-    });
-  }
 
   if (isLoading) {
     return (
@@ -176,18 +146,11 @@ export default function ForecastCard() {
 
   return (
     <div className="w-full max-w-2xl bg-gray-700/20 backdrop-blur-md rounded-3xl p-6 my-5 border border-white/10">
-      <div className="flex items-center justify-between mb-5">
+      <div className="mb-5">
         <SectionTitle>Previsão 5 dias</SectionTitle>
       </div>
 
-      <div
-        ref={scrollRef}
-        className="flex sm:hidden gap-3 overflow-x-auto scrollbar-none cursor-grab select-none"
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseUp}
-      >
+      <div className="flex sm:hidden gap-3 overflow-x-auto scrollbar-none">
         {days.map((day, index) => (
           <DayCard
             key={day.dateStr}
