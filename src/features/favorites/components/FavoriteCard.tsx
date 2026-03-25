@@ -16,6 +16,7 @@ interface Props {
   weather?: CurrentWeather;
   isLoadingWeather?: boolean;
   onRemove: (id: string) => void;
+  onSelect: () => void;
 }
 
 export default function FavoriteCard({
@@ -23,9 +24,13 @@ export default function FavoriteCard({
   weather,
   isLoadingWeather,
   onRemove,
+  onSelect,
 }: Props) {
   return (
-    <div className="w-full bg-gray-700/20 backdrop-blur-md rounded-3xl border border-white/10 px-6 py-5 flex flex-col gap-4">
+    <div
+      onClick={onSelect}
+      className="w-full bg-gray-700/20 backdrop-blur-md rounded-3xl border border-white/10 px-6 py-5 flex flex-col gap-4 cursor-pointer hover:bg-gray-700/40 transition-colors"
+    >
       <div className="flex items-start gap-4">
         <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-white/5 border border-white/10 shadow-md shrink-0">
           {isLoadingWeather ? (
@@ -95,12 +100,26 @@ export default function FavoriteCard({
 
       <div className="flex items-center">
         <button
-          onClick={() => onRemove(favorite.id)}
-          className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/20 text-amber-400 hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-400 transition-all duration-200 cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(favorite.id);
+          }}
+          className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer border 
+            bg-red-500/10 border-red-500/20 text-red-400 
+            md:bg-amber-500/15 md:border-amber-500/20 md:text-amber-400 
+            md:hover:bg-red-500/10 md:hover:border-red-500/20 md:hover:text-red-400"
         >
-          <Star size={12} className="block group-hover:hidden" />
-          <X size={12} className="hidden group-hover:block" />
-          <span className="text-xs font-semibold">Favorito</span>
+          <Star size={12} className="hidden md:block md:group-hover:hidden" />
+
+          <X size={12} className="block md:hidden md:group-hover:block" />
+
+          <span className="text-xs font-semibold hidden md:block md:group-hover:hidden">
+            Favorito
+          </span>
+
+          <span className="text-xs font-semibold block md:hidden md:group-hover:block">
+            Remover
+          </span>
         </button>
       </div>
     </div>

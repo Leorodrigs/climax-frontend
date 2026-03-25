@@ -100,7 +100,7 @@ export default function SearchBar() {
           type="text"
           value={query}
           onChange={(e) => handleInputChange(e.target.value)}
-          placeholder="Cidade..."
+          placeholder="Pesquise por uma cidade"
           className="flex-1 min-w-0 outline-none text-slate-800 placeholder-slate-400 bg-transparent text-sm truncate"
         />
       </div>
