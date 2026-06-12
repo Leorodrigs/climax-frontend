@@ -9,6 +9,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "firebase-messaging-sw.js",
       registerType: "autoUpdate",
 
       includeAssets: ["favicon.png", "globe.png", "logo.png"],
@@ -17,8 +20,8 @@ export default defineConfig({
         name: "ClimaX — Previsão do Tempo",
         short_name: "ClimaX",
         description: "Previsão do tempo para qualquer lugar do mundo.",
-        theme_color: "#06b6d4",
-        background_color: "#0c1a2e",
+        theme_color: "#0c1a2e",
+        background_color: "#f8fafc",
         display: "standalone",
         orientation: "portrait",
         scope: "/",
@@ -43,51 +46,8 @@ export default defineConfig({
         ],
       },
 
-      workbox: {
+      injectManifest: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
-
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/openweathermap\.org\/img\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "weather-icons-cache",
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24 * 7,
-              },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-
-          {
-            urlPattern:
-              /^https:\/\/climax-backend-production\.up\.railway\.app\/.*/i,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "api-cache",
-              networkTimeoutSeconds: 10,
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 5,
-              },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-
-          {
-            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-cache",
-              expiration: {
-                maxEntries: 20,
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-              },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-        ],
       },
     }),
   ],

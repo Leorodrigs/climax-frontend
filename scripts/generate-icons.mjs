@@ -33,7 +33,7 @@ for (const { file, size, maskable } of sizes) {
         width: size,
         height: size,
         channels: 4,
-        background: { r: 12, g: 26, b: 46, alpha: 1 },
+        background: { r: 160, g: 240, b: 247, alpha: 1 },
       },
     })
       .composite([{ input: resized, top: padding, left: padding }])
